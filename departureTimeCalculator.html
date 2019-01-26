@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script src="http://cdn.date-fns.org/v1.9.0/date_fns.min.js"></script>
+    <Title>L&#228;ht&#246;aikalaskuri</Title>
+</head>
+
+<body>
+
+    <div data-role="page" style="text-align:center;">
+        <div data-role="header">
+            <h1>L&#228;ht&#246;aikalaskuri</h1>
+        </div>
+        <div role="main" class="ui-content">
+            <form>
+                <label for="departureTime">L&#228;ht&#246;aika:</label>
+                <input id="departureTime" type="time" value="" data-clear-btn="false" />
+            </form>
+        </div>
+        <div data-role="footer" id="setTimer" style="display:flex;justify-content:center;align-items:flex-end;font-size: x-large"></div>
+    </div>
+
+    <script>
+
+        $("#departureTime").on('change', function () {
+            var now = new Date();
+            var departureTime = new Date();
+            departureTime.setHours($('#departureTime').val().split(':')[0]);
+            departureTime.setMinutes($('#departureTime').val().split(':')[1]);
+            if (dateFns.isBefore(departureTime, now)) {
+                departureTime = dateFns.addDays(departureTime, 1);
+            }
+            $('#setTimer').text("Aseta ajastin kohtaan: " + dateFns.differenceInHours(departureTime, now));
+        });
+
+        $(document).ready(function () {
+            var now = new Date();
+            var departureTime = dateFns.addHours(now, 12);
+            $('#departureTime').val(dateFns.format(departureTime, 'HH:MM'));
+            $('#setTimer').text("Aseta ajastin kohtaan: " + dateFns.differenceInHours(departureTime, now));
+        });
+
+    </script>
+</body>
+
+</html>
